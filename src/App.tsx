@@ -25,9 +25,12 @@ export function App() {
         entry.target.classList.add("is-revealed");
         observer.unobserve(entry.target);
       }
-    }, { rootMargin: "0px 0px -7% 0px" });
+    }, { rootMargin: "0px 0px 20px 0px" });
 
-    document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
+    for (const element of document.querySelectorAll("[data-reveal]")) {
+      // Keep content already visible on load, including deep links, steady.
+      if (element.getBoundingClientRect().top >= window.innerHeight) observer.observe(element);
+    }
     return () => observer.disconnect();
   }, []);
 
@@ -71,9 +74,10 @@ export function App() {
           <div className="section-head" data-reveal="">
             <h2 id="writing-title">Selected writing</h2>
           </div>
-          <ol className="stories">
+          <ol className="stories" role="list">
             {articles.map((article, index) => (
-              <li className="story" key={article.url} data-reveal={index === 0 ? "" : undefined}>
+              <li className="story" key={article.url} data-reveal="">
+                <span className="story-number mono" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <article>
                   <p className="meta">
                     {article.publisher} <span aria-hidden="true">/</span> {article.format}{" "}
@@ -81,7 +85,8 @@ export function App() {
                   </p>
                   <h3>
                     <a href={article.url}>
-                      {article.title}{"\u00a0"}<span className="arrow" aria-hidden="true">↗</span>
+                      <span className="story-title">{article.title}</span>
+                      <span className="story-link-mark" aria-hidden="true"><span className="arrow">↗</span></span>
                     </a>
                   </h3>
                   <p className="summary">{article.summary}</p>
@@ -106,23 +111,31 @@ export function App() {
         </section>
 
         <section className="experience wrap" id="experience" aria-labelledby="experience-title">
-          <div className="section-head">
+          <div className="section-head" data-reveal="">
             <h2 id="experience-title">Experience</h2>
           </div>
-          <div className="work-layout" data-reveal="">
-            <ul className="work-list">
+          <div className="work-layout">
+            <ul className="work-list" role="list">
               {experiences.map((experience) => (
-                <li key={`${experience.organization}:${experience.role}:${experience.dates}`}>
-                  <p className="work-date mono">{experience.dates}</p>
+                <li key={`${experience.organization}:${experience.role}:${experience.dates}`} data-reveal="">
+                  {experience.logo ? (
+                    <img className="work-icon" src={experience.logo} alt="" />
+                  ) : (
+                    <svg className="work-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="7" width="18" height="13" rx="2" />
+                      <path d="M8.5 7V5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v2M3 12a25 25 0 0 0 18 0m-9 0v2.5" />
+                    </svg>
+                  )}
                   <div>
+                    <p className="work-date mono">{experience.dates}</p>
                     <h3>{experience.role}</h3>
                     <p className="work-org">{experience.organization}</p>
-                    <p>{experience.description}</p>
+                    <p className="work-description">{experience.description}</p>
                   </div>
                 </li>
               ))}
             </ul>
-            <aside className="profile" aria-labelledby="profile-title">
+            <aside className="profile" aria-labelledby="profile-title" data-reveal="">
               <p className="mono">About</p>
               <h3 id="profile-title">{fullName}</h3>
               <p>{profile.biography} <i>{journal.title}</i>.</p>

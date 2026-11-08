@@ -1,3 +1,6 @@
+import fifaWorldCupLogo from "./assets/fifa-world-cup-26.png";
+import unEmblem from "./assets/un-emblem.svg";
+
 type Article = {
   title: string;
   publisher: string;
@@ -10,6 +13,7 @@ type Article = {
 };
 
 type Experience = {
+  logo?: string;
   dates: string;
   role: string;
   organization: string;
@@ -97,6 +101,8 @@ export const articles: readonly Article[] = [
 
 export const experiences: readonly Experience[] = [
   {
+    // Monochrome emblem from the FIFA World Cup 26 IP Guidelines, page 4 header.
+    logo: fifaWorldCupLogo,
     dates: "2026",
     role: "Communications Lead · Volunteer",
     organization: "FIFA World Cup 2026",
@@ -109,6 +115,7 @@ export const experiences: readonly Experience[] = [
     description: "Managed scheduling, inboxes and day-to-day requests, keeping track of appointments and follow-ups.",
   },
   {
+    logo: unEmblem,
     dates: "2022–2023",
     role: "Front Desk Receptionist",
     organization: "United Nations · Democratic Republic of the Congo",

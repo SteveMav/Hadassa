@@ -1,0 +1,17 @@
+node_modules/
+dist/
+*.local
+.env
+.env.*
+
+# Maquettes, vérifications et documents de travail locaux
+/test/
+/tests/
+/output/
+/playwright-report/
+/test-results/
+/.playwright-cli/
+/DESIGN_SPEC.md
+/RECHERCHE_*.md
+/*.pdf
+/WhatsApp Image*
